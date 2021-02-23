@@ -23,10 +23,9 @@ public class UserDetails implements Serializable {
 
     public UserDetails() {}
 
-    public UserDetails(@NotEmpty String name, @NotEmpty String surname, User user) {
+    public UserDetails(@NotEmpty String name, @NotEmpty String surname) {
         this.name = name;
         this.surname = surname;
-        this.user = user;
     }
 
     public String getName() {

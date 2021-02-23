@@ -28,11 +28,10 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(@NotEmpty String email, @NotEmpty String password, UserDetails userDetails, Set<Log> logs) {
+    public User(@NotEmpty String email, @NotEmpty String password, UserDetails userDetails) {
         this.email = email;
         this.password = password;
         this.userDetails = userDetails;
-        this.logs = logs;
     }
 
     public Long getId() {
