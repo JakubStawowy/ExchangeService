@@ -10,18 +10,8 @@
 </head>
 <body>
 
-    <form:form method="post" modelAttribute="user">
-        <form:input type="text" placeholder="email" path="email"/>
-        <form:input type="password" placeholder="password" path="password"/>
-        <form:button type="submit">Login</form:button>
-    </form:form>
-    <br/>
-    <a href="register">
-        register
-    </a>
-    <br/>
-    <a>
-        ${message.message}
-    </a>
+<a>
+    done
+</a>
 </body>
 </html>
