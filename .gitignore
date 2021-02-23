@@ -33,7 +33,9 @@ build/
 .vscode/
 
 src/main/resources/hibernate.cfg.xml
+src/main/resources/application.properties
 
 mvnw
 mvnw.cmd
 .mvn
+
