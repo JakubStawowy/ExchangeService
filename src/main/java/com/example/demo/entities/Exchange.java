@@ -3,7 +3,9 @@ package com.example.demo.entities;
 public class Exchange {
 
     private float value;
-    private String currency;
+    private float result;
+    private String currencyFrom;
+    private String currencyTo;
 
     public Exchange(float value) {
         this.value = value;
@@ -20,11 +22,27 @@ public class Exchange {
         this.value = value;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getCurrencyFrom() {
+        return currencyFrom;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyFrom(String currencyFrom) {
+        this.currencyFrom = currencyFrom;
+    }
+
+    public String getCurrencyTo() {
+        return currencyTo;
+    }
+
+    public void setCurrencyTo(String currencyTo) {
+        this.currencyTo = currencyTo;
+    }
+
+    public float getResult() {
+        return result;
+    }
+
+    public void setResult(float result) {
+        this.result = result;
     }
 }

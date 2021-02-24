@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.Exchange;
 import com.example.demo.entities.User;
+import com.example.demo.managers.JsonManager;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class DefaultController {
 
     private final UserService userService;
+    private final JsonManager jsonManager;
 
     @Autowired
-    public DefaultController(UserService userService) {
+    public DefaultController(UserService userService, JsonManager jsonManager) {
         this.userService = userService;
+        this.jsonManager = jsonManager;
     }
 
     @GetMapping("/")
@@ -35,6 +38,7 @@ public class DefaultController {
     public String home(Model model, final @CookieValue(value = "user_id") String id){
 
         model.addAttribute("exchange", new Exchange(1.12f));
+        model.addAttribute("rates", jsonManager.getKeys());
         Optional<User> user = userService.getUserRepository().findById(Long.valueOf(id));
         user.ifPresent(value -> model.addAttribute("loggedUser", value));
 

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.managers.JsonManager;
 import com.example.demo.services.PasswordService;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserDetails;

@@ -13,12 +13,24 @@
 <a>
     Hello ${loggedUser.userDetails.name}
 </a>
-<form:form method="post" modelAttribute="exchange">
+<form:form method="post" modelAttribute="exchange" action="count">
     <form:input type="text" path="value"/>
-    <form:select path="currency">
-        <form:option value="1"/>
-        <form:option value="2"/>
-        <form:option value="3"/>
+    <a>
+        From:
+    </a>
+    <form:select path="currencyFrom">
+        <c:forEach items="${rates}" var="item">
+            <form:option value="${item}"/>
+        </c:forEach>
+    </form:select>
+
+    <a>
+        to:
+    </a>
+    <form:select path="currencyTo">
+        <c:forEach items="${rates}" var="item">
+            <form:option value="${item}"/>
+        </c:forEach>
     </form:select>
     <form:button type="submit">count</form:button>
 </form:form>
