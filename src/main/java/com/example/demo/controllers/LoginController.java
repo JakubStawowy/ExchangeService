@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.ErrorMessage;
-import com.example.demo.entities.Exchange;
 import com.example.demo.entities.Log;
 import com.example.demo.entities.User;
 import com.example.demo.services.LogService;
@@ -12,13 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
-@SessionAttributes("loggedUser")
+//@SessionAttributes("loggedUser")
 public class LoginController {
 
     private final UserService userService;
@@ -31,7 +31,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(final @ModelAttribute("user") User user, Model model, final HttpSession session) throws NoSuchAlgorithmException {
+    public String login(final @ModelAttribute("user") User user, Model model, final HttpSession session, HttpServletResponse response) throws NoSuchAlgorithmException {
 
         User loggedUser = userService.getUserRepository().getUserByEmailAndPassword(user.getEmail(), PasswordService.getHashedPassword(user.getPassword()));
 
@@ -39,8 +39,10 @@ public class LoginController {
 
             Log log = new Log(session.getId(), loggedUser);
             logService.getLogRepository().save(log);
-            model.addAttribute("loggedUser", loggedUser);
-            model.addAttribute("exchange", new Exchange(1.12f));
+
+            Cookie cookie = new Cookie("user_id", String.valueOf(loggedUser.getId()));
+            cookie.setMaxAge(600);
+            response.addCookie(cookie);
 
             return "redirect:home";
         }
