@@ -11,7 +11,23 @@
 <body>
 
 <a>
-    done
+    Hello ${loggedUser.userDetails.name}
+</a>
+<%--<form:form method="post" modelAttribute="exchange">--%>
+<%--    <form:input type="text" path="value"/>--%>
+<%--    <form:select path="b">--%>
+<%--        <form:option value="1"/>--%>
+<%--        <form:option value="2"/>--%>
+<%--        <form:option value="3"/>--%>
+<%--    </form:select>--%>
+<%--</form:form>--%>
+
+<a>
+    ${exchange.value}
+</a>
+
+<a href="logout">
+    Logout
 </a>
 </body>
 </html>

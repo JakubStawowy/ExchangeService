@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.User;
+import com.example.demo.services.PasswordService;
 import com.example.demo.services.UserService;
 import com.example.demo.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class RegisterController {
         if(result.hasErrors()){
             return "register";
         }
-        String hashedPassword = PasswordHasher.getHashedPassword(user.getPassword());
+        String hashedPassword = PasswordService.getHashedPassword(user.getPassword());
         user.setPassword(hashedPassword);
 
         userService.getUserRepository().save(user);

@@ -1,10 +1,10 @@
-package com.example.demo.controllers;
+package com.example.demo.services;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordHasher {
+public class PasswordService {
 
     public static String getHashedPassword(final String password) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

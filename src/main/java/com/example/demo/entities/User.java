@@ -26,6 +26,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Log> logs;
 
+    @Transient
+    public String value1;
+
+    @Transient
+    public String value2;
+
     public User() {}
 
     public User(@NotEmpty String email, @NotEmpty String password, UserDetails userDetails) {
