@@ -1,7 +1,7 @@
 package com.example.demo.entities;
 
 public class ErrorMessage {
-    private String message;
+    private final String message;
 
     public ErrorMessage(String message) {
         this.message = message;

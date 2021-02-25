@@ -11,14 +11,14 @@
 <body>
 
 <a>
-    Hello ${loggedUser.userDetails.name}
+    Hello ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
 </a>
 <form:form method="post" modelAttribute="exchange" action="count">
-    <form:input type="text" path="value"/>
+    <form:input type="text" path="initValue.cashAmount"/>
     <a>
         From:
     </a>
-    <form:select path="currencyFrom">
+    <form:select path="initValue.currency">
         <c:forEach items="${rates}" var="item">
             <form:option value="${item}"/>
         </c:forEach>
@@ -27,7 +27,8 @@
     <a>
         to:
     </a>
-    <form:select path="currencyTo">
+    <form:input type="text" path="targetValue.cashAmount"/>
+    <form:select path="targetValue.currency">
         <c:forEach items="${rates}" var="item">
             <form:option value="${item}"/>
         </c:forEach>

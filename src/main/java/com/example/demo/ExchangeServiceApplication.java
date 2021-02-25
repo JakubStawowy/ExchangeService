@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.managers.JsonManager;
 import com.example.demo.services.PasswordService;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserDetails;
@@ -22,6 +21,7 @@ public class ExchangeServiceApplication {
 
         return args -> {
             userService.getUserRepository().save(new User("user@email.com", PasswordService.getHashedPassword("xdd"), new UserDetails("aa", "bb")));
+
         };
     }
 }

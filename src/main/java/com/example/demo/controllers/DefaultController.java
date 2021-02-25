@@ -1,31 +1,39 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Exchange;
+import com.example.demo.financialSystem.ExchangeCalculator;
 import com.example.demo.entities.User;
-import com.example.demo.managers.JsonManager;
+import com.example.demo.managers.CurrencyJsonManager;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Controller
 public class DefaultController {
 
     private final UserService userService;
-    private final JsonManager jsonManager;
+    private final CurrencyJsonManager jsonManager;
 
     @Autowired
-    public DefaultController(UserService userService, JsonManager jsonManager) {
+    public DefaultController(UserService userService, CurrencyJsonManager jsonManager) {
         this.userService = userService;
         this.jsonManager = jsonManager;
     }
 
-    @GetMapping("/")
-    public String index(){
-        return "redirect:login";
+    @GetMapping({"/", "*"})
+    public String index(HttpServletRequest request){
+        Cookie cookie = WebUtils.getCookie(request, "user_id");
+        if(cookie != null)
+            return "redirect:home";
+        else
+            return "redirect:login";
     }
 
     @GetMapping("/login")
@@ -37,7 +45,7 @@ public class DefaultController {
     @GetMapping("/home")
     public String home(Model model, final @CookieValue(value = "user_id") String id){
 
-        model.addAttribute("exchange", new Exchange(1.12f));
+        model.addAttribute("exchange", new ExchangeCalculator());
         model.addAttribute("rates", jsonManager.getKeys());
         Optional<User> user = userService.getUserRepository().findById(Long.valueOf(id));
         user.ifPresent(value -> model.addAttribute("loggedUser", value));
