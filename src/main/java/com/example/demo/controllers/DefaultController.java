@@ -59,4 +59,9 @@ public class DefaultController {
         model.addAttribute("user", new User());
         return "register";
     }
+
+    @GetMapping("/payment")
+    public String payment(){
+        return "payment";
+    }
 }

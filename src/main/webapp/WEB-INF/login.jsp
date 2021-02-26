@@ -8,10 +8,44 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Insert title here</title>
 </head>
+<style type="text/css">
+    body{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        background: #9932CC;
+        color: white;
+        height: 100vh;
+    }
+    form{
+        padding: 1em;
+        border-radius: 30px;
+        background: darkorange;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    form input{
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #9932CC;
+        margin-bottom: 1em;
+    }
+    a{
+        padding: 1em;
+        border-radius: 30px;
+        background: darkorange;
+        color: black;
+        text-decoration: none;
+    }
+</style>
 <body>
 
     <form:form method="post" modelAttribute="user">
+        <label>email</label>
         <form:input type="text" placeholder="email" path="email"/>
+        <label>password</label>
         <form:input type="password" placeholder="password" path="password"/>
         <form:button type="submit">Login</form:button>
     </form:form>
@@ -19,9 +53,6 @@
     <a href="register">
         register
     </a>
-    <br/>
-    <a>
-        ${message.message}
-    </a>
+    ${message.message}
 </body>
 </html>

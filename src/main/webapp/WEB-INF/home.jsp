@@ -15,19 +15,32 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
+            background: #9932CC;
+            color: white;
+            height: 100vh;
         }
         form{
             padding: 1em;
             border-radius: 30px;
             background: darkorange;
         }
+        a{
+            padding: 1em;
+            border-radius: 30px;
+            background: darkorange;
+            color: black;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
 <a>
-    Hello ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
+    User logged: ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
 </a>
+<h2>
+    Currency converter
+</h2>
 <form:form method="post" modelAttribute="exchange" action="count">
     <form:input type="text" path="initAmount"/>
     <form:errors path="initAmount"/>
@@ -53,7 +66,9 @@
 
 ${result}
 ${message}
-
+<a href="payment">
+    New payment
+</a>
 <a href="logout">
     Logout
 </a>

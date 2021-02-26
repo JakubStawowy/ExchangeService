@@ -7,7 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Insert title here</title>
-    <style>
+    <style type="text/css">
         body{
             display: flex;
             flex-direction: column;
@@ -42,30 +42,23 @@
 </head>
 <body>
 
-<form:form method="post" modelAttribute="user">
-
-    <%--        <label>Username</label>--%>
-    <%--        <form:input path="username" placeholder="Username" type="text"/>--%>
-    <%--        <form:errors path="username"/>--%>
-
-    <label>email</label>
-    <form:input path="email" placeholder="Email" type="text"/>
-<%--    <form:errors path="email"/>--%>
-    <label>Password</label>
-    <form:input path="password" placeholder="Password" type="password"/>
-    <form:errors path="password"/>
-    <label>Username</label>
-    <form:input path="userDetails.name" placeholder="username" type="text"/>
-    <%--        <form:errors path="userDetails.username"/>--%>
-    <label>Surname</label>
-    <form:input path="userDetails.surname" placeholder="surname" type="text"/>
-    <form:errors path="userDetails.surname"/>
-    <form:button type="submit">
-        Register
-    </form:button>
-</form:form>
-<a href="login">
-    I already have account
+<a>
+    User logged: ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
 </a>
+
+<form>
+    <input type="text" placeholder="target user code"/>
+    <input type="text" placeholder="Cash amount"/>
+    <button type="submit">Register payment</button>
+</form>
+
+<a href="home">
+    Cancel
+</a>
+
+<a href="logout">
+    Logout
+</a>
+
 </body>
 </html>
