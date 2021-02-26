@@ -18,7 +18,7 @@
 
     <label>email</label>
     <form:input path="email" placeholder="Email" type="text"/>
-    <form:errors path="email"/>
+<%--    <form:errors path="email"/>--%>
     <label>Password</label>
     <form:input path="password" placeholder="Password" type="password"/>
     <form:errors path="password"/>

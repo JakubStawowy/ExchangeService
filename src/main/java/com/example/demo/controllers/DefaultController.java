@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.financialSystem.ExchangeCalculator;
 import com.example.demo.entities.User;
+import com.example.demo.financialSystem.ExchangeCalculatorBuffer;
 import com.example.demo.managers.CurrencyJsonManager;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class DefaultController {
     @GetMapping("/home")
     public String home(Model model, final @CookieValue(value = "user_id") String id){
 
-        model.addAttribute("exchange", new ExchangeCalculator());
+        model.addAttribute("exchange", new ExchangeCalculatorBuffer());
         model.addAttribute("rates", jsonManager.getKeys());
         Optional<User> user = userService.getUserRepository().findById(Long.valueOf(id));
         user.ifPresent(value -> model.addAttribute("loggedUser", value));

@@ -9,8 +9,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
 @SpringBootApplication
 public class ExchangeServiceApplication {
+
 
     public static void main(String[] args) {
         SpringApplication.run(ExchangeServiceApplication.class, args);
@@ -21,7 +23,6 @@ public class ExchangeServiceApplication {
 
         return args -> {
             userService.getUserRepository().save(new User("user@email.com", PasswordService.getHashedPassword("xdd"), new UserDetails("aa", "bb")));
-
         };
     }
 }

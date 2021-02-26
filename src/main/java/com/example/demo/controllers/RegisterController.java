@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
@@ -34,7 +35,6 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String register(final @ModelAttribute("user") @Valid User user, BindingResult result) throws NoSuchAlgorithmException {
-
 
         if(result.hasErrors()){
             return "register";

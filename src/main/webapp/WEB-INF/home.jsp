@@ -7,6 +7,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Insert title here</title>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/src/main/webapp/js/angular/script.js"></script>--%>
+<%--    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">--%>
+    <style type="text/css">
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        form{
+            padding: 1em;
+            border-radius: 30px;
+            background: darkorange;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,11 +29,12 @@
     Hello ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
 </a>
 <form:form method="post" modelAttribute="exchange" action="count">
-    <form:input type="text" path="initValue.cashAmount"/>
+    <form:input type="text" path="initAmount"/>
+    <form:errors path="initAmount"/>
     <a>
         From:
     </a>
-    <form:select path="initValue.currency">
+    <form:select path="initCurrency">
         <c:forEach items="${rates}" var="item">
             <form:option value="${item}"/>
         </c:forEach>
@@ -27,14 +43,17 @@
     <a>
         to:
     </a>
-    <form:input type="text" path="targetValue.cashAmount"/>
-    <form:select path="targetValue.currency">
+    <form:select path="targetCurrency">
         <c:forEach items="${rates}" var="item">
             <form:option value="${item}"/>
         </c:forEach>
     </form:select>
     <form:button type="submit">count</form:button>
 </form:form>
+
+${result}
+${message}
+
 <a href="logout">
     Logout
 </a>

@@ -31,4 +31,9 @@ public class CashAmountWithCurrency {
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
+
+    @Override
+    public String toString() {
+        return cashAmount+" "+currency;
+    }
 }

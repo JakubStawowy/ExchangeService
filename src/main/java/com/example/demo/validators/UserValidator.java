@@ -5,11 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
-public class UserValidator implements Validator {
+public class UserValidator extends MyValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -23,17 +21,6 @@ public class UserValidator implements Validator {
         validate(ValidatorEnum.EMAIL, user.getEmail(), "email", errors);
         validate(ValidatorEnum.PASSWORD, user.getPassword(), "password", errors);
 //        validate(ValidatorEnum.USERNAME, user.getUserDetails().getName(), "username", errors);
-
-    }
-
-    private void validate(ValidatorEnum validatorEnum, String value, String field, Errors errors){
-
-        String patternReg = validatorEnum.getPattern();
-        Pattern pattern = Pattern.compile(patternReg);
-        Matcher matcher = pattern.matcher(value);
-
-        if(!matcher.matches())
-            errors.rejectValue(field, validatorEnum.getErrCode(), validatorEnum.getErrMessage());
 
     }
 }

@@ -14,6 +14,12 @@ public class ExchangeCalculator implements Calculator<String, BigDecimal>{
         targetValue = new CashAmountWithCurrency();
     }
 
+
+    public ExchangeCalculator(CashAmountWithCurrency initValue, CashAmountWithCurrency targetValue){
+        this.initValue = initValue;
+        this.targetValue = targetValue;
+    }
+
     public void setInitValue(CashAmountWithCurrency initValue) {
         this.initValue = initValue;
     }

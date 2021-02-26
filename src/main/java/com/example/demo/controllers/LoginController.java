@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
-//@SessionAttributes("loggedUser")
+@SessionAttributes("loggedUser")
 public class LoginController {
 
     private final UserService userService;
@@ -44,6 +45,7 @@ public class LoginController {
             cookie.setMaxAge(600);
             response.addCookie(cookie);
 
+            model.addAttribute("loggedUser", loggedUser);
             return "redirect:home";
         }
         else{
@@ -51,6 +53,5 @@ public class LoginController {
             return "login";
 
         }
-
     }
 }
