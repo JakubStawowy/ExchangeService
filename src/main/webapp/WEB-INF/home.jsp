@@ -66,7 +66,7 @@
 
 ${result}
 ${message}
-<a href="payment">
+<a href="registerTransaction">
     New payment
 </a>
 <a href="logout">

@@ -23,15 +23,29 @@ public class User implements Serializable {
     @JoinColumn(name = "user_details_id", referencedColumnName = "id")
     private UserDetails userDetails;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_account_id", referencedColumnName = "id")
+    private UserAccount userAccount;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Log> logs;
 
+
     public User() {}
 
-    public User(@NotEmpty String email, @NotEmpty String password, UserDetails userDetails) {
+    public User(@NotEmpty String email, @NotEmpty String password, UserDetails userDetails, UserAccount userAccount) {
         this.email = email;
         this.password = password;
         this.userDetails = userDetails;
+        this.userAccount = userAccount;
+    }
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
     public Long getId() {

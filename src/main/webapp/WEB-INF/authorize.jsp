@@ -42,21 +42,22 @@
 </head>
 <body>
 
-    <a>
-        User logged: ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
-    </a>
+<a>
+    User logged: ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
+</a>
 
-    <form:form modelAttribute="transactionBuffer" method="post" action="registerTransaction">
-        <form:input path="receiverEmail" type="text" placeholder="target user email"/>
-        <form:input path="amount" type="text" placeholder="Cash amount"/>
-        <form:button type="submit">Register payment</form:button>
-    </form:form>
-    <a href="home">
-        Cancel
-    </a>
+We sent an email with authorization code to your email account
+<form:form modelAttribute="authorizeBuffer" action="authorizeTransaction">
+    <form:input path="confirmedAuthorizationCode" type="text"/>
+    <form:button type="submit">Submit</form:button>
+</form:form>
+<a href="home">
+    Cancel
+</a>
 
-    <a href="logout">
-        Logout
-    </a>
+<a href="logout">
+    Logout
+</a>
+
 </body>
 </html>
