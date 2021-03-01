@@ -21,6 +21,10 @@ public class TransactionPayment implements Serializable {
     @Column(name = "transaction_time")
     private Timestamp transactionTime;
 
+    @NotNull
+    @Column(columnDefinition = "varchar(255) default 'EUR'")
+    private String currency;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
@@ -34,10 +38,11 @@ public class TransactionPayment implements Serializable {
         transactionTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public TransactionPayment(BigDecimal paymentAmount, UserAccount userAccount, UserAccount targetAccount) {
+    public TransactionPayment(BigDecimal paymentAmount, UserAccount userAccount, UserAccount targetAccount, String currency) {
         this.paymentAmount = paymentAmount;
         this.userAccount = userAccount;
         this.targetAccount = targetAccount;
+        this.currency = currency;
     }
 
     public TransactionPayment() {

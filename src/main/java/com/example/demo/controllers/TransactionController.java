@@ -1,8 +1,13 @@
 package com.example.demo.controllers;
 
+import com.example.demo.financialSystem.Calculator;
+import com.example.demo.financialSystem.CashAmountWithCurrency;
+import com.example.demo.financialSystem.ExchangeCalculator;
 import com.example.demo.financialSystem.TransactionBuffer;
 import com.example.demo.entities.TransactionPayment;
 import com.example.demo.entities.User;
+import com.example.demo.managers.CurrencyJsonManager;
+import com.example.demo.managers.JsonManager;
 import com.example.demo.services.EmailService;
 import com.example.demo.services.TransactionPaymentService;
 import com.example.demo.services.UserService;
@@ -27,13 +32,15 @@ public class TransactionController {
     private final TransactionPaymentService transactionPaymentService;
     private final UserService userService;
     private final NumberFormatValidator numberFormatValidator;
+    private final JsonManager<String, BigDecimal> jsonManager;
 
     @Autowired
-    public TransactionController(EmailService emailService, TransactionPaymentService transactionPaymentService, UserService userService, NumberFormatValidator numberFormatValidator) {
+    public TransactionController(EmailService emailService, TransactionPaymentService transactionPaymentService, UserService userService, NumberFormatValidator numberFormatValidator, CurrencyJsonManager jsonManager) {
         this.emailService = emailService;
         this.transactionPaymentService = transactionPaymentService;
         this.userService = userService;
         this.numberFormatValidator = numberFormatValidator;
+        this.jsonManager = jsonManager;
     }
 
     @PostMapping("registerTransaction")
@@ -83,7 +90,9 @@ public class TransactionController {
                 transactionPaymentService.getTransactionPaymentRepository().save(new TransactionPayment(
                         new BigDecimal(transactionBuffer.getAmount()),
                         sender.getUserAccount(),
-                        receiver.getUserAccount()));
+                        receiver.getUserAccount(),
+                        sender.getUserAccount().getCurrency()
+                        ));
 
                 emailService.sendEmail(
                         EmailService.senderAddress,
@@ -111,7 +120,13 @@ public class TransactionController {
         BigDecimal senderBalance = sender.getUserAccount().getBalance();
         BigDecimal receiverBalance = receiver.getUserAccount().getBalance();
         sender.getUserAccount().setBalance(senderBalance.subtract(new BigDecimal(amount)));
-        receiver.getUserAccount().setBalance(receiverBalance.add(new BigDecimal(amount)));
+
+        Calculator<String, BigDecimal> calculator = new ExchangeCalculator(
+                new CashAmountWithCurrency(amount, sender.getUserAccount().getCurrency()),
+                new CashAmountWithCurrency("1.0000", receiver.getUserAccount().getCurrency())
+        );
+
+        receiver.getUserAccount().setBalance(receiverBalance.add(calculator.count(jsonManager.getMap()).getCashAmount()));
 
         userService.getUserRepository().save(sender);
         userService.getUserRepository().save(receiver);

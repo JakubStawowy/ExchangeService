@@ -28,13 +28,13 @@ public class ExchangeServiceApplication {
                     "miaudev1234@gmail.com",
                     PasswordService.getHashedPassword("xdd"),
                     new UserDetails("Miau", "Dev"),
-                    new UserAccount("USD", new BigDecimal("1000.00")))
+                    new UserAccount("PLN", new BigDecimal("1000.00")))
             );
             userService.getUserRepository().save(new User(
                     "exchangeservice1.1@gmail.com",
                     PasswordService.getHashedPassword("xdd"),
                     new UserDetails("Default", "User"),
-                    new UserAccount("USD", new BigDecimal("1000.00")))
+                    new UserAccount("EUR", new BigDecimal("1000.00")))
             );
 
         };
