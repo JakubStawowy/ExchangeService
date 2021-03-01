@@ -1,21 +1,21 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.TransactionBuffer;
+import com.example.demo.financialSystem.TransactionBuffer;
 import com.example.demo.entities.TransactionPayment;
 import com.example.demo.entities.User;
 import com.example.demo.services.EmailService;
 import com.example.demo.services.TransactionPaymentService;
-import com.example.demo.services.UserAccountService;
 import com.example.demo.services.UserService;
+import com.example.demo.validators.NumberFormatValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Random;
 
@@ -26,23 +26,31 @@ public class TransactionController {
     private final EmailService emailService;
     private final TransactionPaymentService transactionPaymentService;
     private final UserService userService;
+    private final NumberFormatValidator numberFormatValidator;
 
     @Autowired
-    public TransactionController(EmailService emailService, TransactionPaymentService transactionPaymentService, UserService userService) {
+    public TransactionController(EmailService emailService, TransactionPaymentService transactionPaymentService, UserService userService, NumberFormatValidator numberFormatValidator) {
         this.emailService = emailService;
         this.transactionPaymentService = transactionPaymentService;
         this.userService = userService;
+        this.numberFormatValidator = numberFormatValidator;
     }
 
     @PostMapping("registerTransaction")
     public String registerTransaction(final @ModelAttribute("transactionBuffer")TransactionBuffer transactionBuffer,
                                        final @CookieValue(value = "user_id") String id, Model model){
+
+        if(!numberFormatValidator.checkStringParseToBigDecimal(transactionBuffer.getAmount())){
+            model.addAttribute("message", "Wrong number format");
+            return "payment";
+        }
+
         Optional<User> sender = userService.getUserRepository().findById(Long.valueOf(id));
         sender.ifPresent(value->{
 
             String transactionCode = generateRandomCode();
             transactionBuffer.setAuthorizationCode(transactionCode);
-            emailService.sendEmail(EmailService.senderAddress, value.getEmail(), "Transaction", "Transaction code: "+transactionCode);
+            emailService.sendEmail(EmailService.senderAddress, "Transaction", "Transaction code: "+transactionCode, value.getEmail());
 
             model.addAttribute("code", transactionCode);
             model.addAttribute("authorizeBuffer", new TransactionBuffer());
@@ -52,41 +60,61 @@ public class TransactionController {
     }
 
     @PostMapping("authorizeTransaction")
-    @ResponseBody
     public String authorizeTransaction(final @SessionAttribute("registeredBuffer")TransactionBuffer transactionBuffer, final @CookieValue(value = "user_id") String id,
                                        final @ModelAttribute(value = "authorizeBuffer")TransactionBuffer authorizeBuffer,
-                                       HttpSession session){
+                                       HttpSession session, Model model){
 
-        if(!transactionBuffer.getAuthorizationCode().equals(authorizeBuffer.getConfirmedAuthorizationCode())){
-            return "ERROR: incompatible authorization code";
-        }
-
+        Optional<User> optionalLoggedUser = userService.getUserRepository().findById(Long.valueOf(id));
         session.removeAttribute("registeredBuffer");
-        Optional<User> sender = userService.getUserRepository().findById(Long.valueOf(id));
-        User receiver = userService.getUserRepository().getUserByEmail(transactionBuffer.getReceiverEmail());
 
-        if(receiver != null){
+        if(optionalLoggedUser.isPresent()){
 
-            emailService.sendEmail(
-                    EmailService.senderAddress,
-                    receiver.getEmail(),
-                    "payment",
-                    "Transaction with amount "+transactionBuffer.getAmount()+" registered"
-            );
+            User receiver = userService.getUserRepository().getUserByEmail(transactionBuffer.getReceiverEmail());
+            User sender = optionalLoggedUser.get();
 
-            sender.ifPresent(value->{
+            if(!transactionBuffer.getAuthorizationCode().equals(authorizeBuffer.getConfirmedAuthorizationCode())){
+                model.addAttribute("loggedUser", sender);
+                model.addAttribute("message", "Incompatible authorization code");
+                model.addAttribute("transactionBuffer", new TransactionBuffer());
+                return "payment";
+            }
+
+            if(receiver != null){
                 transactionPaymentService.getTransactionPaymentRepository().save(new TransactionPayment(
                         new BigDecimal(transactionBuffer.getAmount()),
-                        value.getUserAccount(),
-                        receiver.getUserAccount()
-                ));
-            });
+                        sender.getUserAccount(),
+                        receiver.getUserAccount()));
 
-            return "transaction registered";
+                emailService.sendEmail(
+                        EmailService.senderAddress,
+                        "payment",
+                        "Transaction with amount "+transactionBuffer.getAmount()+" registered",
+                        receiver.getEmail(),
+                        sender.getEmail()
+                );
+
+                makeTransaction(transactionBuffer.getAmount(), sender, receiver);
+                model.addAttribute("message", "Transaction registered");
+                return "message";
+            }
+            else{
+                model.addAttribute("message", "No user with this email address");
+                model.addAttribute("transactionBuffer", new TransactionBuffer());
+                return "payment";
+            }
         }
-        else{
-            return "Error: no user with this email address";
-        }
+        return "redirect:errorFallback";
+    }
+
+    private void makeTransaction(@NotEmpty String amount, @NotNull User sender, @NotNull User receiver){
+
+        BigDecimal senderBalance = sender.getUserAccount().getBalance();
+        BigDecimal receiverBalance = receiver.getUserAccount().getBalance();
+        sender.getUserAccount().setBalance(senderBalance.subtract(new BigDecimal(amount)));
+        receiver.getUserAccount().setBalance(receiverBalance.add(new BigDecimal(amount)));
+
+        userService.getUserRepository().save(sender);
+        userService.getUserRepository().save(receiver);
     }
 
     private String generateRandomCode(){
@@ -102,5 +130,4 @@ public class TransactionController {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
-
 }

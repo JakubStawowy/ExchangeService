@@ -17,20 +17,6 @@
             color: white;
             height: 100vh;
         }
-        form{
-            padding: 1em;
-            border-radius: 30px;
-            background: darkorange;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        form input{
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #9932CC;
-            margin-bottom: 1em;
-        }
         a{
             padding: 1em;
             border-radius: 30px;
@@ -43,23 +29,8 @@
 <body>
 
     <a>
-        User logged: ${loggedUser.userDetails.name} ${loggedUser.userDetails.surname}
+        Error
     </a>
 
-    <form:form modelAttribute="transactionBuffer" method="post" action="registerTransaction">
-        <form:input path="receiverEmail" type="text" placeholder="target user email"/>
-        <form:input path="amount" type="text" placeholder="Cash amount"/>
-        <form:button type="submit">Register payment</form:button>
-    </form:form>
-    <a>
-        ${message}
-    </a>
-    <a href="home">
-        Cancel
-    </a>
-
-    <a href="logout">
-        Logout
-    </a>
 </body>
 </html>

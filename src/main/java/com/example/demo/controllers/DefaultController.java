@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.TransactionBuffer;
-import com.example.demo.entities.TransactionPayment;
-import com.example.demo.financialSystem.ExchangeCalculator;
+import com.example.demo.financialSystem.TransactionBuffer;
 import com.example.demo.entities.User;
 import com.example.demo.financialSystem.ExchangeCalculatorBuffer;
 import com.example.demo.managers.CurrencyJsonManager;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
@@ -79,5 +76,15 @@ public class DefaultController {
     public String authorizeTransaction(Model model, @ModelAttribute("transactionBuffer") TransactionBuffer transactionBuffer){
         model.addAttribute("transactionBuffer", transactionBuffer);
         return "authorize";
+    }
+
+    @GetMapping("/errorFallback")
+    public String errorFallback(){
+        return "errorFallback";
+    }
+
+    @GetMapping("/message")
+    public String messagePage(){
+        return "message";
     }
 }
