@@ -58,7 +58,13 @@ public class DefaultController {
     @GetMapping("/register")
     public String register(Model model){
         model.addAttribute("user", new User());
+        model.addAttribute("rates", jsonManager.getKeys());
         return "register";
+    }
+
+    @GetMapping("/authorizeUser")
+    public String authorizeUser(){
+        return "authorizeUser";
     }
 
     @GetMapping("/registerTransaction")

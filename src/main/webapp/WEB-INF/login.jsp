@@ -53,6 +53,6 @@
     <a href="register">
         register
     </a>
-    ${message.message}
+    ${message}
 </body>
 </html>

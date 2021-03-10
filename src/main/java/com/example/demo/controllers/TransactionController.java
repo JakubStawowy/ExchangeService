@@ -55,7 +55,7 @@ public class TransactionController {
         Optional<User> sender = userService.getUserRepository().findById(Long.valueOf(id));
         sender.ifPresent(value->{
 
-            String transactionCode = generateRandomCode();
+            String transactionCode = emailService.generateRandomCode();
             transactionBuffer.setAuthorizationCode(transactionCode);
             emailService.sendEmail(EmailService.senderAddress, "Transaction", "Transaction code: "+transactionCode, value.getEmail());
 
@@ -130,19 +130,5 @@ public class TransactionController {
 
         userService.getUserRepository().save(sender);
         userService.getUserRepository().save(receiver);
-    }
-
-    private String generateRandomCode(){
-
-        int leftLimit = 48;
-        int rightLimit = 90;
-        int targetStringLength = 6;
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
     }
 }

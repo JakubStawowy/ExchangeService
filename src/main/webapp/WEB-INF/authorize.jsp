@@ -51,6 +51,7 @@ We sent an email with authorization code to your email account
     <form:input path="confirmedAuthorizationCode" type="text"/>
     <form:button type="submit">Submit</form:button>
 </form:form>
+
 <a href="home">
     Cancel
 </a>

@@ -42,7 +42,7 @@
 </head>
 <body>
 
-<form:form method="post" modelAttribute="user">
+<form:form method="post" modelAttribute="user" action="authorizeUser">
 
     <%--        <label>Username</label>--%>
     <%--        <form:input path="username" placeholder="Username" type="text"/>--%>
@@ -50,16 +50,27 @@
 
     <label>email</label>
     <form:input path="email" placeholder="Email" type="text"/>
-<%--    <form:errors path="email"/>--%>
+    <form:errors path="email"/>
     <label>Password</label>
     <form:input path="password" placeholder="Password" type="password"/>
     <form:errors path="password"/>
+    <label>Confirm password</label>
+    <form:input path="confirmedPassword" placeholder="confirm password" type="password"/>
+    <form:errors path="confirmedPassword"/>
     <label>Username</label>
     <form:input path="userDetails.name" placeholder="username" type="text"/>
     <%--        <form:errors path="userDetails.username"/>--%>
     <label>Surname</label>
     <form:input path="userDetails.surname" placeholder="surname" type="text"/>
     <form:errors path="userDetails.surname"/>
+
+    <label>Currency</label>
+    <form:select path="userAccount.currency">
+        <c:forEach items="${rates}" var="item">
+            <form:option value="${item}"/>
+        </c:forEach>
+    </form:select>
+    <form:errors path="userAccount.currency"/>
     <form:button type="submit">
         Register
     </form:button>

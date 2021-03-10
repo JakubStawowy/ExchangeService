@@ -19,6 +19,13 @@ public class User implements Serializable {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    @Transient
+    private String confirmedPassword;
+
+    @Transient
+    private String authorizationCode;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_details_id", referencedColumnName = "id")
     private UserDetails userDetails;
@@ -38,6 +45,22 @@ public class User implements Serializable {
         this.password = password;
         this.userDetails = userDetails;
         this.userAccount = userAccount;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
+    }
+
+    public void setAuthorizationCode(String authorizationCode) {
+        this.authorizationCode = authorizationCode;
+    }
+
+    public String getConfirmedPassword() {
+        return confirmedPassword;
+    }
+
+    public void setConfirmedPassword(String confirmedPassword) {
+        this.confirmedPassword = confirmedPassword;
     }
 
     public UserAccount getUserAccount() {
@@ -87,4 +110,5 @@ public class User implements Serializable {
     public void setLogs(Set<Log> logs) {
         this.logs = logs;
     }
+
 }

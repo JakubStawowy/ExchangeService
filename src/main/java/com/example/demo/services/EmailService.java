@@ -5,6 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class EmailService {
 
@@ -23,5 +25,19 @@ public class EmailService {
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(text);
         javaMailSender.send(simpleMailMessage);
+    }
+
+    public String generateRandomCode(){
+
+        int leftLimit = 48;
+        int rightLimit = 90;
+        int targetStringLength = 6;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 }
