@@ -42,7 +42,7 @@
 </style>
 <body>
 
-    <form:form method="post" modelAttribute="user">
+    <form:form method="post" modelAttribute="user" action="login">
         <label>email</label>
         <form:input type="text" placeholder="email" path="email"/>
         <label>password</label>

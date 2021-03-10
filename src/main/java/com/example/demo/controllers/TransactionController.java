@@ -53,16 +53,21 @@ public class TransactionController {
         }
 
         Optional<User> sender = userService.getUserRepository().findById(Long.valueOf(id));
-        sender.ifPresent(value->{
+        if(sender.isPresent()){
+            User user = sender.get();
+            if(user.getUserAccount().getBalance().compareTo(new BigDecimal(transactionBuffer.getAmount())) < 0){
+                model.addAttribute("message", "You don't have enough amount");
+                return "payment";
+            }
 
             String transactionCode = emailService.generateRandomCode();
             transactionBuffer.setAuthorizationCode(transactionCode);
-            emailService.sendEmail(EmailService.senderAddress, "Transaction", "Transaction code: "+transactionCode, value.getEmail());
+            emailService.sendEmail(EmailService.senderAddress, "Transaction", "Transaction code: "+transactionCode, user.getEmail());
 
             model.addAttribute("code", transactionCode);
             model.addAttribute("authorizeBuffer", new TransactionBuffer());
             model.addAttribute("registeredBuffer", transactionBuffer);
-        });
+        }
         return "authorize";
     }
 
